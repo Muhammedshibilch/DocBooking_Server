@@ -1,4 +1,3 @@
-// filepath: /backend/controllers/appointmentController.js
 const Appointment = require('../models/appointmentModel');
 
 // Create appointment
@@ -33,8 +32,8 @@ exports.getAllAppointmentsController = async (req, res) => {
     const allAppointments = await Appointment.find({ userId });
     res.status(200).json(allAppointments);
   } catch (err) {
-    console.log(err);
-    res.status(500).json("Internal Server error");
+    console.error('Error fetching appointments:', err);
+    res.status(500).json({ message: 'Internal Server Error' });
   }
 };
 
@@ -51,3 +50,47 @@ exports.cancelAppointmentController = async (req, res) => {
   }
 };
 
+// Get all appointments for admin
+exports.getAlladminAppointments = async (req, res) => {
+  try {
+    const appointments = await Appointment.find().populate('userId', 'username'); // Populate user details
+    res.status(200).json(appointments);
+  } catch (error) {
+    console.error('Error fetching appointments:', error);
+    res.status(500).json({ message: 'Failed to fetch appointments' });
+  }
+};
+
+
+// delte admin appointment
+// exports.deleteAppointment = async (req, res) => {
+//   try {
+//     const { id } = req.params;
+
+//     const deletedAppointment = await Appointment.findByIdAndDelete(id);
+//     if (!deletedAppointment) {
+//       return res.status(404).json({ message: 'Appointment not found' });
+//     }
+
+//     res.status(200).json({ message: 'Appointment deleted successfully' });
+//   } catch (error) {
+//     console.error('Error deleting appointment:', error);
+//     res.status(500).json({ message: 'Failed to delete appointment' });
+//   }
+// };
+// Cancel admin appointment
+exports.deleteAppointment = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const updatedAppointment = await Appointment.findByIdAndUpdate(id, { status: 'Cancelled' }, { new: true });
+    if (!updatedAppointment) {
+      return res.status(404).json({ message: 'Appointment not found' });
+    }
+
+    res.status(200).json({ message: 'Appointment cancelled successfully' });
+  } catch (error) {
+    console.error('Error cancelling appointment:', error);
+    res.status(500).json({ message: 'Failed to cancel appointment' });
+  }
+};

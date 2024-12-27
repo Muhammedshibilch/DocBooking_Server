@@ -72,14 +72,29 @@ exports.getSingleDoctorController = async(req,res)=>{
   
 }
 
+// exports.deleteDoctorController = async (req, res) => {
+//   const doctorId = req.params.id;
+
+//   try {
+//     await doctors.findByIdAndDelete(doctorId);
+//     res.status(200).json({ message: 'Doctor deleted successfully' });
+//   } catch (err) {
+//     console.error('Error deleting doctor:', err);
+//     res.status(500).json({ message: 'Internal Server Error' });
+//   }
+// };
+
 exports.deleteDoctorController = async (req, res) => {
   const doctorId = req.params.id;
+  console.log(`Received request to delete doctor with ID: ${doctorId}`);
 
   try {
     await doctors.findByIdAndDelete(doctorId);
+    console.log('Doctor deleted successfully');
     res.status(200).json({ message: 'Doctor deleted successfully' });
   } catch (err) {
     console.error('Error deleting doctor:', err);
     res.status(500).json({ message: 'Internal Server Error' });
   }
 };
+

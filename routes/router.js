@@ -40,4 +40,9 @@ router.delete('/doctors/:id', jwtMiddleware, doctorController.deleteDoctorContro
 // Update user details
 router.put('/user/:id', jwtMiddleware, userController.updateUserController);
 
+// Get all appointments for admin
+router.get('/appointmentss', appointmentController.getAlladminAppointments);
+
+// delete admin appointment
+
 module.exports = router;
